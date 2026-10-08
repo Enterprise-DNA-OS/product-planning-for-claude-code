@@ -41,6 +41,12 @@ try{
  const a=await run('add-feature',[],{reference:'TEST-1',name:'Test alpha',owner:'Mere',release:'test release',description:'<script>bad</script>'});
  await fail('update-release',['Test release'],{status:'shipped'},/Resolve all open/);
  const b=await run('add-feature',[],{reference:'TEST-2',name:'Test beta',owner:'Hemi'});
+ await run('decide',['TEST-1'],{outcome:'approve',reason:'Ready for test release'});
+ await run('update-release',['Test release'],{due:'2027-01-21'});
+ await fail('update-feature',['TEST-1'],{status:'shipped'},/Current approval/);
+ await run('decide',['TEST-1'],{outcome:'approve',reason:'New release date checked'});
+ await run('decide',['TEST-1'],{outcome:'defer',reason:'Latest decision supersedes approval'});
+ await fail('update-feature',['TEST-1'],{status:'shipped'},/Current approval/);
  await run('add-dependency',['TEST-1'],{blocker:'TEST-2'});
  await fail('add-dependency',['TEST-2'],{blocker:'TEST-1'},/cycle/);
  await fail('add-dependency',['TEST-2'],{blocker:'TEST-2'},/cycle/);
