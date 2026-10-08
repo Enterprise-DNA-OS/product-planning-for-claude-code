@@ -148,7 +148,7 @@ export function human(value){
  if(!Array.isArray(value)){if(value&&typeof value==='object'&&Object.values(value).some(Array.isArray))return Object.entries(value).map(([k,v])=>`${k}\n${human(v)}`).join('\n\n');return JSON.stringify(value,null,2);}
  if(!value.length)return 'Nothing here.';const keys=Object.keys(value[0]);const clean=v=>typeof v==='object'&&v!==null?JSON.stringify(v):String(v??'');
  const widths=keys.map(k=>Math.min(70,Math.max(k.length,...value.map(r=>clean(r[k]).length))));
- const row=r=>keys.map((k,i)=>clean(r[k]).replace(/[\r\n]/g,' ').slice(0,70).padEnd(widths[i])).join(' | ').trimEnd();
- return [row(Object.fromEntries(keys.map(k=>[k,k]))),widths.map(w=>'-'.repeat(w)).join('-+-'),...value.map(row)].join('\n');
+ const row=r=>keys.map((k,i)=>clean(r[k]).replace(/[\r\n]/g,' ').slice(0,70).padEnd(widths[i])).join('  ').trimEnd();
+ return [row(Object.fromEntries(keys.map(k=>[k,k]))),widths.map(w=>'-'.repeat(w)).join('  '),...value.map(row)].join('\n');
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(path.resolve(process.argv[1])).href){let db;try{const {cmd,args,o}=parseArgs(process.argv.slice(2));db=await getDb();const result=await execute(db,cmd,args,o);console.log(o.json?JSON.stringify(result,null,2):human(result));}catch(e){console.error(e.message);process.exitCode=1;}finally{if(db)await db.close();}}

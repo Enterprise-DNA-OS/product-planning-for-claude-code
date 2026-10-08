@@ -72,6 +72,7 @@ try{
  assert.equal(parseCsv('\uFEFFA,B\r\n"one, two","line\nnext"\r\n')[0].A,'one, two');
  assert.throws(()=>parseCsv('A,A\n1,2'),/unique/);assert.throws(()=>parseCsv('A,B\n"x,y'),/unclosed/);
  assert.deepEqual(parseArgs(['backlog','--json']),{cmd:'backlog',args:[],o:{json:true}});assert(human(await run('backlog')).includes('HAR-101'));
+ assert.match(human(await run('backlog')).split('\n')[1],/^\s*-{2,}(\s+-{2,})*\s*$/);
  const draft=await run('draft-release',['Spring service']);assert(fs.readFileSync(draft.file,'utf8').includes('DRAFT'));
  const exportFile=path.join(temp,'export.json');const exp=await run('export',[],{file:exportFile});assert.equal(exp.counts.features,count);assert.equal(Object.keys(exp.counts).length,6);assert.equal(JSON.parse(fs.readFileSync(exportFile)).features.length,count);
  await fail('export',[],{file:exportFile},/EEXIST/);
