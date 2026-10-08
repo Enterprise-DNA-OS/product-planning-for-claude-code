@@ -1,115 +1,76 @@
-<h1 align="center">Product Planning for Claude Code</h1>
+# Product Planning for Claude Code
 
-<p align="center">
-  <strong>The open-source product planning system that is just a database and Claude Code.</strong>
-</p>
+Own the backlog, release decisions and feedback records behind your product plan. A database plus Claude Code, Codex, OpenCode or Cursor. Built by Enterprise DNA, MIT licensed.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+## Three ways to use it
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your Aha! Roadmaps data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=aha">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/aha?utm_source=github&utm_medium=readme&utm_campaign=aha">How it works</a></td>
-  </tr>
-</table>
+- **Do it yourself:** install the free version, run the demo and import a prepared Aha! feature-list export. Hosting and agent use have their own costs.
+- **We customise it:** Enterprise DNA maps your records, writes your review rules and builds the screens or connections you need. A setup fee, then a retainer for ongoing work.
+- **We run it for you:** Omni by Enterprise DNA installs, connects and operates your version. One setup fee, then a retainer. [Book a call](https://enterprisedna.co/omni/book/?offer=replace-software&utm_campaign=aha&utm_source=github&utm_medium=readme).
 
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-aha">Instead of Aha! Roadmaps</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
+## Try the fictional business
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
-
----
-
-## What is this
-
-Product Planning for Claude Code does the job you pay Aha! Roadmaps for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the Aha! Roadmaps dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays Aha! Roadmaps per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=aha).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
-
-## Quick start
-
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
+Node 20 or later. No external database is required for the demo.
 
 ```bash
-git clone https://github.com/Enterprise-DNA-OS/product-planning-for-claude-code.git
-cd product-planning-for-claude-code
 npm install
+npm test
 npm run demo
+npm run planning -- prioritise
+npm run planning -- release-review --json
+npm run view
+npm run docs
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+The embedded PGlite database persists in .data/db. Set DATABASE_URL for Postgres. Use a fresh database without the fictional seed for real records. The six record sets are releases, features, dependencies, feedback, decisions and activity. Every table has UUID ids and update timestamps; three views answer priorities, release readiness and retention review.
 
-### Use it with your own Postgres or Supabase
+## The weekly work
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+Start with /weekly-review: priorities, releases, attention and retention flags. /decide records the owner and reason. /draft-release writes a private internal brief. /customise changes the rules through a migration; /new-view adds a read-only report. There are 24 CLI commands including help and 25 slash recipes. [CLI syntax and calculations](docs/cli.md).
 
-## The commands
+Features cannot ship with unshipped blockers or stale approval. Scope edits invalidate approval. Dependency cycles fail. Changes are transactional and logged with an operator label; this is not authentication or a tamper-proof signature. A local database runs one process at a time. Shared operation needs restricted roles, authenticated access and tested backups.
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+## Ten questions for Monday
 
-| Command | What it does |
-|---|---|
-| `/...` | ... |
+Aha! already supports extensive custom reports. These are tested questions this version answers today, not unsupported claims that Aha! cannot produce similar analysis.
 
-## Instead of aha
+- Which open features rank highest under our scoring rule? `prioritise`
+- Which high-priority features still have blockers? `prioritise`
+- Which releases exceed their remaining capacity? `release-review`
+- Which releases contain features without current approval? `release-review`
+- Which owners carry the most estimated work? `owner-workload`
+- Which owners have stale feature reviews? `owner-workload`
+- Which overdue releases still have open features? `release-review`
+- Which active features have no accountable owner? `attention`
+- Which feedback records need a retention review? `compliance`
+- Which dependencies prevent a feature from shipping? `dependencies`
 
-<!-- TODO(author): how to bring data across from Aha! Roadmaps; link docs/replace-aha.md -->
+## Your first hour: ten things to ask for
 
-## Architecture
+1. Put our business name and colours on the release brief.
+2. Show the highest ranked items with unresolved dependencies.
+3. Find releases whose remaining effort exceeds capacity.
+4. Assign an owner to every active feature.
+5. Show decisions that no longer match current scope.
+6. Draft the next internal release review.
+7. Check customer feedback retention dates and legal holds.
+8. Test our Aha! export without saving it.
+9. Add our product-line field through a migration.
+10. Add a private weekly view for the owner.
 
+## Bring your history
+
+```bash
+npm run planning -- import aha --file=imports/aha.csv --dry-run --actor="Migration operator"
+npm run planning -- import aha --file=imports/aha.csv --actor="Migration operator"
 ```
-product-planning-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
-```
 
-## Built for coding agents
+The [replacement guide](docs/replace-aha.md) specifies the feature-list columns and status mapping. Repeated identical imports are skipped; changed rows are rejected for reconciliation. Ideas, files, votes, integrations and historical decisions need separate mapping. Imported capacity and scores need review. Nothing is cancelled or sent.
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+## Paperwork, privacy and proof
 
-## Contributing
+brand.json controls read-only views, internal release briefs and decision records. [Compliance documentation](docs/compliance.md) cites NZ Principle 9 and Australian APP 11, distinguishes internal policies and preserves legal holds. No automatic destruction or compliance certification exists. [Why no front end](docs/why-no-front-end.md) explains what the free base provides.
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+npm test creates disposable data, exercises every command and checks invalid approvals, dependency cycles, import rollback, repeated imports, holds, ambiguous references, drafts, exports and escaped HTML. GitHub checks run the suite on Linux, Windows and Postgres. [Research and scope](docs/research.md).
 
-## Want it installed and run for you?
-
-Enterprise DNA installs Product Planning for Claude Code for your business, migrates your Aha! Roadmaps data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
-
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=aha)
-- Read more: [enterprisedna.co/omni/instead-of/aha](https://enterprisedna.co/omni/instead-of/aha?utm_source=github&utm_medium=readme&utm_campaign=aha)
-
-## License
-
-MIT. Copyright (c) 2026 Enterprise DNA.
+Not affiliated with Aha! or Anthropic. Your records remain in a database you control.

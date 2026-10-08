@@ -1,0 +1,42 @@
+[
+  {
+    "question": "Which open features rank highest under our scoring rule?",
+    "command": "prioritise"
+  },
+  {
+    "question": "Which high-priority features still have blockers?",
+    "command": "prioritise"
+  },
+  {
+    "question": "Which releases exceed their remaining capacity?",
+    "command": "release-review"
+  },
+  {
+    "question": "Which releases contain features without current approval?",
+    "command": "release-review"
+  },
+  {
+    "question": "Which owners carry the most estimated work?",
+    "command": "owner-workload"
+  },
+  {
+    "question": "Which owners have stale feature reviews?",
+    "command": "owner-workload"
+  },
+  {
+    "question": "Which overdue releases still have open features?",
+    "command": "release-review"
+  },
+  {
+    "question": "Which active features have no accountable owner?",
+    "command": "attention"
+  },
+  {
+    "question": "Which feedback records need a retention review?",
+    "command": "compliance"
+  },
+  {
+    "question": "Which dependencies prevent a feature from shipping?",
+    "command": "dependencies"
+  }
+]

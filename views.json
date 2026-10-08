@@ -1,13 +1,25 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Product Planning for Claude Code: what needs attention, rendered by npm run view",
+    "title": "Product planning week",
     "sections": [
       {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "title": "Priority queue",
+        "sql": "SELECT * FROM priority_queue ORDER BY priority_score DESC,reference"
+      },
+      {
+        "title": "Release readiness",
+        "sql": "SELECT name,due_date,capacity_days,remaining_days,open_features,unapproved_features FROM release_readiness ORDER BY due_date"
+      }
+    ]
+  },
+  {
+    "name": "retention",
+    "title": "Feedback retention review",
+    "sections": [
+      {
+        "title": "Personal information needing review",
+        "sql": "SELECT reference,organisation,purpose,review_on,legal_hold,issue FROM retention_queue ORDER BY reference"
       }
     ]
   }
